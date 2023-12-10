@@ -3,7 +3,7 @@ import pickle
 import time
 import random
 import requests
-from requests.exceptions import ConnectTimeout, ReadTimeout
+from requests.exceptions import ConnectTimeout, ReadTimeout, SSLError
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -24,7 +24,6 @@ import traceback
 
 
 class Scraper:
-    # cookie_file should be None if you don't want to save cookies
 	cookie_file:Optional[str]='cookies/cookies.pkl'
 	error_file:str='error.txt'
 
@@ -35,12 +34,14 @@ class Scraper:
 		try:
 			self.driver.close()
 			self.driver.quit()
+		except AttributeError:
+			pass
 		except Exception:
 			pass
 
 		
 	# Setup driver with best practice options
-	def setup_driver(self, headless:bool=True, profile:Optional[str]=None) -> Optional[webdriver.Chrome]:
+	def setup_driver(self, headless:bool=True, profile:Optional[str]=None, proxy: Optional[str]=None) -> Optional[webdriver.Chrome]:
 		options = Options()
 		service = Service()
   
@@ -48,6 +49,10 @@ class Scraper:
 			options.add_argument('--headless=new')
 		if profile:
 			options.add_argument(f'--user-data-dir={profile}')
+		if proxy:
+			plugin = self.proxy_extension(proxy)
+			if plugin:
+				options.add_extension(plugin)
 
 		[options.add_argument(argument) for argument in [
 			'--start-maximized',
@@ -108,9 +113,9 @@ class Scraper:
 			response = session.get(url)
 			if response.status_code == 200:
 				return BeautifulSoup(response.text, 'html.parser')
-		except ReadTimeout or ConnectTimeout:
+		except (ReadTimeout, ConnectTimeout, SSLError) as err:
 			if print_error:
-				print('Timeout, url: "{}"'.format(url))
+				print('{}: url: "{}"'.format(err.__class__, url))
 		except Exception:
 			traceback.print_exc()
 
@@ -419,7 +424,9 @@ class Scraper:
 		);
 		""" % (PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS)
 
-		pluginfile = 'proxy_auth_plugin.zip'
+		if os.path.exists('tmp'):
+			os.mkdir('tmp')
+		pluginfile = 'tmp/proxy_auth_plugin.zip'
 
 		with zipfile.ZipFile(pluginfile, 'w') as zp:
 			zp.writestr("manifest.json", manifest_json)
