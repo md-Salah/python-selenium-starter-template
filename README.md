@@ -22,7 +22,7 @@ This is a starter template for Python Selenium WebDriver. It includes a Selenium
 
 ## Example Usage
 
-```
+```python
 from modules.selenium_wrapper import SeleniumWrapper
 
 # Create a SeleniumWrapper instance
