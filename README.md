@@ -5,19 +5,19 @@ This is a starter template for Python Selenium WebDriver. It includes a Selenium
 ## Getting Started
 
 1. Clone the repository or download it:
-   ```
+   ```bash
    git clone https://github.com/md-Salah/python-selenium-starter-template.git
    ```
 2. Navigate to the folder & install dependency:
 
-```
+```bash
     cd python-selenium-starter-template
     pip install -r requirements.txt
 ```
 
 3. Run the code:
 
-```
+```bash
     python main.py
 ```
 
