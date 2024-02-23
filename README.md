@@ -8,9 +8,10 @@ This is a starter template for Python Selenium WebDriver. It includes a Selenium
    ```
    git clone https://github.com/md-Salah/python-selenium-starter-template.git
    ```
-2. Install dependency:
+2. Navigate to the folder & install dependency:
 
 ```
+    cd python-selenium-starter-template
     pip install -r requirements.txt
 ```
 
@@ -38,5 +39,13 @@ spider.element_send_keys(text='Who is Lionel Messi?',
                          )
 
 ```
+
 #### Screenshot
+
 <img src="ss/chrome.png">
+
+
+## Credits
+
+1. [Md Towfikul Islam](https://github.com/towfikul-islam/)
+2. [Mohammad Salah Uddin](https://github.com/md-Salah)
