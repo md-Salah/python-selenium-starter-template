@@ -38,6 +38,9 @@ spider.element_send_keys(text='Who is Lionel Messi?',
                          selector='textarea[name="q"]'
                          )
 
+# Access the driver
+spider.driver.refresh()
+
 ```
 
 #### Screenshot
